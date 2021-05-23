@@ -17,6 +17,8 @@ public class DcUsers implements Serializable {
     private String userName;
     
     private String userAccount;
+
+    private String password;
     
     private String phone;
     
@@ -51,6 +53,14 @@ public class DcUsers implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUserAccount() {
