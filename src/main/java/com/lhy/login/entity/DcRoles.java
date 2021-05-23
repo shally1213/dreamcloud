@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * (DcRoles)实体类
  *
- * @author makejava
+ * @author lihongyan
  * @since 2021-05-22 22:40:35
  */
 public class DcRoles implements Serializable {

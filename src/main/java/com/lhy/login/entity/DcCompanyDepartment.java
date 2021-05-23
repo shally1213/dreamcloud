@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * (DcCompanyDepartment)实体类
  *
- * @author makejava
+ * @author lihongyan
  * @since 2021-05-22 22:40:35
  */
 public class DcCompanyDepartment implements Serializable {

@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * (DcUsers)实体类
  *
- * @author makejava
+ * @author lihongyan
  * @since 2021-05-22 22:39:20
  */
 public class DcUsers implements Serializable {

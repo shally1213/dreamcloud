@@ -3,10 +3,15 @@ package com.lhy.login.controller;
 import com.lhy.login.service.DcUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author lihongyan
@@ -25,9 +30,28 @@ public class LoingController {
     @Autowired
     ServletContext servletContext;
 
-    @RequestMapping(value = {"/", "/index"})
+    @RequestMapping("/index")
     public String index(){
         return "index";
+    }
+
+    /**
+     * 登录
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping({"/","/login"})
+    public String login(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String userAccount = request.getParameter("userAccount");
+        String password = request.getParameter("password");
+        String companyId = request.getParameter("companyId");
+        String roleId = request.getParameter("roleId");
+        System.out.println(userAccount+"+++++++"+password);
+        ModelAndView view = new ModelAndView("/index");
+        return "login";
     }
 
 }

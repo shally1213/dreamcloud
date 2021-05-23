@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * (DcCompany)表服务接口
  *
- * @author makejava
+ * @author lihongyan
  * @since 2021-05-22 22:40:35
  */
 @Service

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * (DcCompanyDepartment)表服务实现类
  *
- * @author makejava
+ * @author lihongyan
  * @since 2021-05-22 22:40:35
  */
 @Service("dcCompanyDepartmentService")
