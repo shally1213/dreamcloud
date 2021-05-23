@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>后台管理</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="/css/font.css">
+        <link rel="stylesheet" href="/css/xadmin.css">
+        <script src="/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/xadmin.js"></script>
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <script type="text/javascript">
+        	var timeDate;
+			onload=function(){
+				timeDate=window.setInterval("dae()",1000);
+//				alert(window.setInterval("dae()",1000));
+//				timeDate=window.setTimeout("dae()",1000);
+			}
+			
+		
+		function dae(){
+			var dt =new Date();
+			var year=dt.getFullYear();
+			var month=dt.getMonth()+1<10 ?"0"+(dt.getMonth()+1):dt.getMonth()+1;
+			var day=dt.getDate();
+			var hours=dt.getHours();
+			var minutes=dt.getMinutes();
+			var seconds=dt.getSeconds();
+			document.getElementById("time").innerHTML=year+"年"+month+"月"+day+"日"+hours+":"+minutes+"："+seconds;
+//			document.write(year+"年"+month+"月"+day+"日"+hours+":"+minutes+":"+seconds);
+//			timeDate=window.setTimeout("dae()",1000);
+		}
+			
+			
+			function stop(){
+				clearInterval(timeDate);
+			}
+			function start(){
+//				timeDate=window.setTimeout("dae()",1000);
+				timeDate=window.setInterval("dae()",1000);
+
+			}
+        
+        
+        
+        </script>
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <blockquote class="layui-elem-quote">欢迎管理员：
+                                <span class="x-red">admin</span>！当前时间:<span id="time"></span>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+
+               
+                <style id="welcome_style"></style>
+
+        </div>
+        </div>
+    </body>
+</html>

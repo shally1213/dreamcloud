@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.login.dao.DcCompanyDao">
+
+    <resultMap type="com.lhy.login.entity.DcCompany" id="DcCompanyMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="delTime" column="del_time" jdbcType="TIMESTAMP"/>
+        <result property="delState" column="del_state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="findById" resultMap="DcCompanyMap">
+        select
+          id, name, create_time, del_time, del_state
+        from dreamcloud.dc_company
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="findAllLimit" resultMap="DcCompanyMap">
+        select
+          id, name, create_time, del_time, del_state
+        from dreamcloud.dc_company
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="DcCompanyMap">
+        select
+          id, name, create_time, del_time, del_state
+        from dreamcloud.dc_company
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="delTime != null">
+                and del_time = #{delTime}
+            </if>
+            <if test="delState != null">
+                and del_state = #{delState}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into dreamcloud.dc_company(name, create_time, del_time, del_state)
+        values (#{name}, #{createTime}, #{delTime}, #{delState})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update dreamcloud.dc_company
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="delTime != null">
+                del_time = #{delTime},
+            </if>
+            <if test="delState != null">
+                del_state = #{delState},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from dreamcloud.dc_company where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.login.dao.DcUsersDao">
+
+    <resultMap type="com.lhy.login.entity.DcUsers" id="DcUsersMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="withdrawTime" column="withdraw_time" jdbcType="TIMESTAMP"/>
+        <result property="delState" column="del_state" jdbcType="INTEGER"/>
+        <result property="creatorId" column="creator_id" jdbcType="INTEGER"/>
+        <result property="companyId" column="company_id" jdbcType="INTEGER"/>
+        <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="findById" resultMap="DcUsersMap">
+        select
+          id, user_name, user_account, phone, create_time, state, email, withdraw_time, del_state, creator_id, company_id, role_id
+        from dreamcloud.dc_users
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="findAllLimit" resultMap="DcUsersMap">
+        select
+          id, user_name, user_account, phone, create_time, state, email, withdraw_time, del_state, creator_id, company_id, role_id
+        from dreamcloud.dc_users
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="DcUsersMap">
+        select
+          id, user_name, user_account, phone, create_time, state, email, withdraw_time, del_state, creator_id, company_id, role_id
+        from dreamcloud.dc_users
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName}
+            </if>
+            <if test="userAccount != null and userAccount != ''">
+                and user_account = #{userAccount}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="withdrawTime != null">
+                and withdraw_time = #{withdrawTime}
+            </if>
+            <if test="delState != null">
+                and del_state = #{delState}
+            </if>
+            <if test="creatorId != null">
+                and creator_id = #{creatorId}
+            </if>
+            <if test="companyId != null">
+                and company_id = #{companyId}
+            </if>
+            <if test="roleId != null">
+                and role_id = #{roleId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into dreamcloud.dc_users(user_name, user_account, phone, create_time, state, email, withdraw_time, del_state, creator_id, company_id, role_id)
+        values (#{userName}, #{userAccount}, #{phone}, #{createTime}, #{state}, #{email}, #{withdrawTime}, #{delState}, #{creatorId}, #{companyId}, #{roleId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update dreamcloud.dc_users
+        <set>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="userAccount != null and userAccount != ''">
+                user_account = #{userAccount},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="withdrawTime != null">
+                withdraw_time = #{withdrawTime},
+            </if>
+            <if test="delState != null">
+                del_state = #{delState},
+            </if>
+            <if test="creatorId != null">
+                creator_id = #{creatorId},
+            </if>
+            <if test="companyId != null">
+                company_id = #{companyId},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from dreamcloud.dc_users where id = #{id}
+    </delete>
+
+</mapper>
