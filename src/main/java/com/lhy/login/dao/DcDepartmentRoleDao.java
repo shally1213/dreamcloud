@@ -1,7 +1,6 @@
 package com.lhy.login.dao;
 
 import com.lhy.login.entity.DcDepartmentRole;
-import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ public interface DcDepartmentRoleDao {
      * @param limit 查询条数
      * @return 对象列表
      */
-    List<DcDepartmentRole> findAllLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<DcDepartmentRole> findAllLimit( int offset,  int limit);
 
 
     /**
