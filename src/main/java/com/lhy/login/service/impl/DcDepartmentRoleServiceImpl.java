@@ -49,7 +49,8 @@ public class DcDepartmentRoleServiceImpl implements DcDepartmentRoleService {
      * @param dcDepartmentRole 实例对象
      * @return 对象列表
      */
-     List<DcDepartmentRole> queryAll(DcDepartmentRole dcDepartmentRole){
+     @Override
+     public List<DcDepartmentRole> queryAll(DcDepartmentRole dcDepartmentRole){
         return this.dcDepartmentRoleDao.queryAll(dcDepartmentRole);
      }
 

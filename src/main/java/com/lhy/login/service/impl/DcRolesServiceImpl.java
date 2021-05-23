@@ -49,7 +49,8 @@ public class DcRolesServiceImpl implements DcRolesService {
      * @param dcRoles 实例对象
      * @return 对象列表
      */
-     List<DcRoles> queryAll(DcRoles dcRoles){
+     @Override
+     public List<DcRoles> queryAll(DcRoles dcRoles){
         return this.dcRolesDao.queryAll(dcRoles);
      }
 

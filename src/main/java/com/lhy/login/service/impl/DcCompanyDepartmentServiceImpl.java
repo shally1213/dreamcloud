@@ -49,7 +49,8 @@ public class DcCompanyDepartmentServiceImpl implements DcCompanyDepartmentServic
      * @param dcCompanyDepartment 实例对象
      * @return 对象列表
      */
-     List<DcCompanyDepartment> queryAll(DcCompanyDepartment dcCompanyDepartment){
+    @Override
+     public List<DcCompanyDepartment> queryAll(DcCompanyDepartment dcCompanyDepartment){
         return this.dcCompanyDepartmentDao.queryAll(dcCompanyDepartment);
      }
 

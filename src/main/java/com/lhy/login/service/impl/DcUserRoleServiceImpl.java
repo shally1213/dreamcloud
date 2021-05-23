@@ -49,7 +49,8 @@ public class DcUserRoleServiceImpl implements DcUserRoleService {
      * @param dcUserRole 实例对象
      * @return 对象列表
      */
-     List<DcUserRole> queryAll(DcUserRole dcUserRole){
+    @Override
+    public List<DcUserRole> queryAll(DcUserRole dcUserRole){
         return this.dcUserRoleDao.queryAll(dcUserRole);
      }
 

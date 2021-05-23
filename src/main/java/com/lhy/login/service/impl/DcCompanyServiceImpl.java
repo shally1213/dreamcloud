@@ -49,7 +49,8 @@ public class DcCompanyServiceImpl implements DcCompanyService {
      * @param dcCompany 实例对象
      * @return 对象列表
      */
-     List<DcCompany> queryAll(DcCompany dcCompany){
+     @Override
+     public List<DcCompany> queryAll(DcCompany dcCompany){
         return this.dcCompanyDao.queryAll(dcCompany);
      }
 
