@@ -11,7 +11,6 @@ import java.util.List;
  * @author makejava
  * @since 2021-05-23 20:59:10
  */
-@Repository
 public interface DcUsersDao {
 
     /**

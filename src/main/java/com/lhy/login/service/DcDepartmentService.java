@@ -11,7 +11,6 @@ import java.util.List;
  * @author lihongyan
  * @since 2021-05-22 22:40:35
  */
-@Service
 public interface DcDepartmentService {
 
     /**
