@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * (DcUsers)表数据库访问层
  *
- * @author lihongyan
- * @since 2021-05-22 22:39:20
+ * @author makejava
+ * @since 2021-05-23 20:59:10
  */
 @Repository
 public interface DcUsersDao {

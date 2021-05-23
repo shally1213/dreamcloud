@@ -6,19 +6,18 @@ import java.io.Serializable;
 /**
  * (DcUsers)实体类
  *
- * @author lihongyan
- * @since 2021-05-22 22:39:20
+ * @author makejava
+ * @since 2021-05-23 20:59:04
  */
+
 public class DcUsers implements Serializable {
-    private static final long serialVersionUID = -18113979431273982L;
+    private static final long serialVersionUID = 534150846124580467L;
     
     private Integer id;
     
     private String userName;
     
     private String userAccount;
-
-    private String password;
     
     private String phone;
     
@@ -37,6 +36,8 @@ public class DcUsers implements Serializable {
     private Integer companyId;
     
     private Integer roleId;
+    
+    private String password;
 
 
     public Integer getId() {
@@ -53,14 +54,6 @@ public class DcUsers implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getUserAccount() {
@@ -141,6 +134,14 @@ public class DcUsers implements Serializable {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

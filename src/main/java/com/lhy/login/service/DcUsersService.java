@@ -1,17 +1,14 @@
 package com.lhy.login.service;
 
 import com.lhy.login.entity.DcUsers;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
  * (DcUsers)表服务接口
  *
- * @author lihongyan
- * @since 2021-05-22 22:39:20
+ * @author makejava
+ * @since 2021-05-23 20:59:10
  */
-@Service
 public interface DcUsersService {
 
     /**
