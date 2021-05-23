@@ -49,7 +49,8 @@ public class DcUsersServiceImpl implements DcUsersService {
      * @param dcUsers 实例对象
      * @return 对象列表
      */
-     List<DcUsers> queryAll(DcUsers dcUsers){
+    @Override
+    public List<DcUsers> queryAll(DcUsers dcUsers){
         return this.dcUsersDao.queryAll(dcUsers);
      }
 
