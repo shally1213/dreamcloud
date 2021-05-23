@@ -49,7 +49,8 @@ public class DcDepartmentServiceImpl implements DcDepartmentService {
      * @param dcDepartment 实例对象
      * @return 对象列表
      */
-     List<DcDepartment> queryAll(DcDepartment dcDepartment){
+     @Override
+     public List<DcDepartment> queryAll(DcDepartment dcDepartment){
         return this.dcDepartmentDao.queryAll(dcDepartment);
      }
 
