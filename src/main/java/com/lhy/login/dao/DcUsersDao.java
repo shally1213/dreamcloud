@@ -1,6 +1,8 @@
 package com.lhy.login.dao;
 
 import com.lhy.login.entity.DcUsers;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 /**
@@ -9,6 +11,7 @@ import java.util.List;
  * @author makejava
  * @since 2021-05-22 22:39:20
  */
+@Repository
 public interface DcUsersDao {
 
     /**

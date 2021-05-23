@@ -1,6 +1,8 @@
 package com.lhy.login.service;
 
 import com.lhy.login.entity.DcUsers;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 /**
@@ -9,6 +11,7 @@ import java.util.List;
  * @author makejava
  * @since 2021-05-22 22:39:20
  */
+@Service
 public interface DcUsersService {
 
     /**
