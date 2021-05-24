@@ -26,6 +26,13 @@
         where id = #{id}
     </select>
 
+    <!--账号查询-->
+    <select id="queryAccount" resultMap="DcUsersMap">
+        select
+            id, user_name, user_account, phone, create_time, state, email, withdraw_time, del_state, creator_id, company_id, role_id, password
+        from dreamcloud.dc_users
+        where user_account=#{userAccount}
+    </select>
     <!--查询指定行数据-->
     <select id="findAllLimit" resultMap="DcUsersMap">
         select

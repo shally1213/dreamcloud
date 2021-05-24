@@ -63,4 +63,5 @@ public interface DcUsersDao {
      */
     int deleteById(Integer id);
 
+    DcUsers queryAccount(String userAccount);
 }

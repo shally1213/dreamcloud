@@ -61,4 +61,7 @@ public interface DcUsersService {
      */
     boolean deleteById(Integer id);
 
+    void login(String userAccount, String password);
+
+    void checkAccount(String userAccount);
 }
