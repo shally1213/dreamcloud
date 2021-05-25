@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MD5Util {
     public static void main(String[] args) {
-        String s = md5("222");
+        String s = md5("898989");
         System.out.println(s);
     }
     public static String md5(String plainText){

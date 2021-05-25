@@ -19,17 +19,19 @@
     <![endif]-->
 </head>
 <body class="login-bg">
-    
     <div class="login layui-anim layui-anim-up">
         <div class="message">后台</div>
         <div id="darkbannerwrap"></div>
-        
-        <form method="post" >
+        <form method="post" action="/loginOn" id="login_form" >
             <input name="userAccount" placeholder="用户名"  type="text"  >
             <hr class="hr15">
             <input name="password" placeholder="密码"  type="password" >
             <hr class="hr15">
-            <input value="登录"  style="width:100%;" type="submit">
+<!--            <input name="companyId" placeholder="公司"  type="combobox"  >-->
+<!--            <hr class="hr15">-->
+<!--            <input name="roleId" placeholder="角色"  type="combobox" >-->
+<!--            <hr class="hr15">-->
+            <input value="登录"  style="width:100%;" type="button" id="logonBtn">
             <hr class="hr20" >
             <input type="hidden" value="0"  name="ustateid" id="ustateid">
         </form>
@@ -38,14 +40,19 @@
     
     <!-- 底部结束 -->
     <script>
-    //百度统计可去掉
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-      var s = document.getElementsByTagName("script")[0]; 
-      s.parentNode.insertBefore(hm, s);
-    })();
+        $("#logonBtn").bind("click",function() {
+            var userAccount = $("#userAccount").textbox("getValue");
+            var password = $("#password").textbox("getValue");
+            if(userAccount == "") {
+                $.messager.alert('提示','请输入账号！','error');
+                return false;
+            }
+            if(password == "") {
+                $.messager.alert('提示','请输入密码！','error');
+                return false;
+            }
+            $("#login_form").submit();
+        });
     </script>
 </body>
 </html>
