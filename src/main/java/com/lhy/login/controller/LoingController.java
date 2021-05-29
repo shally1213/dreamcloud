@@ -30,8 +30,6 @@ public class LoingController extends BaseController  {
     @Resource
     private DcUsersService usersService;
 
-//    @Autowired
-//    ServletContext servletContext;
 
     @Autowired
     private DcUsersService service;
@@ -39,6 +37,16 @@ public class LoingController extends BaseController  {
     @RequestMapping({"/","/login"})
     public String login() {
         return "login";
+    }
+
+    @RequestMapping("index")
+    public String index() {
+        return "index";
+    }
+
+    @RequestMapping("/welcome")
+    public String welcome() {
+        return "welcome";
     }
 
     /**

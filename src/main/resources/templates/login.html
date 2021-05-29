@@ -24,9 +24,9 @@
             <hr class="hr15">
             <input name="password" id="password" placeholder="密码"  type="password" >
             <hr class="hr15">
-            <input name="companyId" id="companyId" placeholder="公司" type="text"  style="width: 100%;height: 38px">
+            <input name="companyId" id="companyId" placeholder="公司"  style="width: 100%;height: 38px">
             <hr class="hr15">
-            <input name="roleId" id="roleId" placeholder="角色"  type="text"  style="width: 100%;height: 38px">
+            <input name="roleId" id="roleId" placeholder="角色"  style="width: 100%;height: 38px">
             <hr class="hr15">
             <input value="登录"  style="width:100%;" type="button" id="logonBtn">
             <hr class="hr20" >
@@ -75,8 +75,8 @@
             //     editable : true
             // });
             $("#logonBtn").bind("click",function() {
-                var userAccount = $("#userAccount").textbox("getValue");
-                var password = $("#password").textbox("getValue");
+                var userAccount = $("#userAccount").val();
+                var password = $("#password").val();
                 if(userAccount == "") {
                     $.messager.alert('提示','请输入账号！','error');
                     return false;
@@ -85,16 +85,17 @@
                     $.messager.alert('提示','请输入密码！','error');
                     return false;
                 }
+
                 var submitData = {};
                 submitData.userAccount = userAccount;
                 submitData.password = password;
                 $.ajax({
-                    url : 'loginOn',
+                    url : '/loginOn',
                     type : 'POST',
                     data : submitData,
                     dataType : 'json',
                     success : function(resultData) {
-                        window.location.href="index.html";
+                        location.href="index";
                     },
                     error : function(XMLHttpRequest, textStatus, errorThrown) {
 
