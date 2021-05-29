@@ -14,7 +14,7 @@
 }
 .panel-header {
   padding: 5px;
-  position: relative;
+  position: relative;/combo_arrow.png
 }
 .panel-title {
   background: url('images/blank.gif') no-repeat;
@@ -945,7 +945,7 @@
   overflow: auto;
 }
 .combo-arrow {
-  background: url('images/combo_arrow.png') no-repeat center center;
+  background: url('images/aiwrap.png') no-repeat center center;
 }
 .combo-panel {
   background-color: #ffffff;

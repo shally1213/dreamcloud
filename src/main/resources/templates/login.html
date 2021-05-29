@@ -10,13 +10,10 @@
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link rel="stylesheet" href="/css/font.css">
     <link rel="stylesheet" href="/css/login.css">
-	  <link rel="stylesheet" href="/css/xadmin.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
     <link rel="stylesheet" type="text/css" href="/css/easyui.css" >
-    <script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/js/locale/easyui-lang-zh_CN.js"></script>
-    <script type="text/javascript" src="/js/jquery.form.js"></script>
-    <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script src="/lib/layui/layui.js" charset="utf-8"></script>
+
+
 </head>
 <body class="login-bg">
     <div class="login layui-anim layui-anim-up">
@@ -27,23 +24,26 @@
             <hr class="hr15">
             <input name="password" id="password" placeholder="密码"  type="password" >
             <hr class="hr15">
-            <input name="companyId" id="companyId" placeholder="公司"  type="text"  >
+            <input name="companyId" id="companyId" placeholder="公司" style="width: 100%;height: 38px">
             <hr class="hr15">
-            <input name="roleId" id="roleId" placeholder="角色"  type="text" >
+            <input name="roleId" id="roleId" placeholder="角色"  >
             <hr class="hr15">
             <input value="登录"  style="width:100%;" type="button" id="logonBtn">
             <hr class="hr20" >
             <input type="hidden" value="0"  name="ustateid" id="ustateid">
         </form>
     </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/js/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/js/jquery.form.js"></script>
+    <script src="/lib/layui/layui.js" charset="utf-8"></script>
     <script>
         $(document).ready(function() {
             var companyData = [{id:'1',text:'硕媒科技有限公司'},{id:'2',text:'老元建筑公司'}];
             // 选择公司的下拉框初始化
             $("#companyId").combobox({
-                label : "公司：",
                 data: companyData ,
-                labelAlign : 'right',
                 valueField : 'id',
                 textField : 'text',
                 required : true,
@@ -52,8 +52,6 @@
             var roleData = [{id:'1',text:'管理员'},{id:'2',text:'普通员工'}];
             // 选择角色的下拉框初始化
             $("#roleId").combobox({
-                label : "角色：",
-                labelAlign : 'right',
                 valueField : 'id',
                 textField : 'text',
                 data: roleData,
