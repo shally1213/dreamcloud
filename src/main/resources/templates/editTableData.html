@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>后台管理</title>
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<!--  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    -->
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="stylesheet" href="/css/font.css">
+	<link rel="stylesheet" href="/css/login.css">
+	<link rel="stylesheet" href="/css/xadmin.css">
+	<link rel="stylesheet" type="text/css" href="/css/easyui.css" >
+	<!--//新增自定义样式与脚本--->
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/js/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="/js/jquery.form.js"></script>
+	<script src="/lib/layui/layui.js" charset="utf-8"></script>
+	<script type="text/javascript" src="js/jquery.datagrid.js?"></script>
+</head>
+<body class="bgWhite">
+<script type="text/javascript">
+	(function () {
+				var eventConfig = ${eventConfig};
+				var fromListId = "${fromListId}";
+                var eventId="${eventConfig.eventId}";
+                var id="${eventConfig.id}";
+                // 初始化Form表单中的组件
+				eventConfig.initComponentInForm = function(pageContext) {
+					var componentIdAndTypeMap = {};
+					var componentConfig = eventConfig.componentConfig;
+					var oneGroupComponentConfig;
+					for(var i = 0 ; i<componentConfig.length ; i++) {
+						oneGroupComponentConfig = componentConfig[i].itemArr;
+						for(var j=0 ; j<oneGroupComponentConfig.length ; j++) {
+							oneComponentConfig = oneGroupComponentConfig[j];
+							if(oneComponentConfig.isReadOnly == true) {
+								oneGroupComponentConfig[j].readonly=true;
+								ComponentFunction.initComponent(oneGroupComponentConfig[j] , pageContext,eventId,id,'view');
+							}else{
+								// 初始化组件
+								ComponentFunction.initComponent(oneGroupComponentConfig[j] , pageContext,eventId,id,'edit');
+							}
+							componentIdAndTypeMap[oneGroupComponentConfig[j].id] = oneGroupComponentConfig[j].componentType;
+						}
+					}
+					pageContext.componentIdAndTypeMap = componentIdAndTypeMap;
+				};
+				// 对于combobox专门启动验证
+				eventConfig.validateCombobox = function() {
+					var componentConfig = eventConfig.componentConfig;
+					var oneGroupComponentConfig;
+					var oneComponentConfig;
+					for(var i = 0 ; i<componentConfig.length ; i++) {
+						oneGroupComponentConfig = componentConfig[i].itemArr;
+						for(var j = 0 ; j < oneGroupComponentConfig.length ; j++) {
+							oneComponentConfig = oneGroupComponentConfig[j];
+							if(oneComponentConfig.componentType == 'combobox' && oneComponentConfig.required) {
+								// 如果必填项没有任何选中，那么就报错
+								if($("input[name='" + oneComponentConfig.id + "']:checked").size() < 1) {
+									$.messager.alert('错误','验证未通过，【' + oneComponentConfig.labelName + '】必填！','error');
+									return false;
+								}
+							}else if(oneComponentConfig.componentType == 'combotreeOnlyLeafSelected' && oneComponentConfig.required) {
+								// 如果必填项没有任何选中，那么就报错
+								if(""==$("input[name='" + oneComponentConfig.id + "']").val()) {
+									$.messager.alert('错误','【' + oneComponentConfig.labelName + '】未正确选中值！','error');
+									return false;
+								}
+							}
+						}
+					}
+					return true;
+				};
+				// 初始化页面中的按钮
+				eventConfig.initButton = function(pageContext) {
+					// 提交按钮的点击触发事件
+					$("#submitButton${eventConfig.eventId}").linkbutton({
+						onClick : function() {
+							if($("#submitForm${eventConfig.eventId}").form('validate')) {
+								// combobox需要进行单独的验证
+								if(eventConfig.validateCombobox()) {
+									$("#submitButton${eventConfig.eventId}").linkbutton("disable");
+									$("#submitForm${eventConfig.eventId}").triggerHandler("submit");
+									$.messager.progress({
+										title:'数据提交中',
+										msg:'数据提交中，请勿关闭窗口'
+									});
+								}
+							} else {
+								$.messager.alert('错误','验证未通过，可将鼠标移到红色区域查看提示！','error');
+							}
+						}
+					});
+					// 重置按钮的点击重复啊事件
+					$("#resetButton${eventConfig.eventId}").click(function() {
+						$("#submitForm${eventConfig.eventId}")[0].reset();
+					});
+					// 取消按钮的点击触发事件
+					$("#cancelButton${eventConfig.eventId}").click(function() {
+						try {
+							parent.layer.close(parent.layer.index);
+						} catch(err) {
+							try {
+								parent.parent.layer.close(parent.parent.layer.index);
+							} catch(err) {
+								try {
+									parent.parent.parent.layer.close(parent.parent.parent.layer.index);
+								}catch (err) {
+									window.parent.parent.location.reload();
+								}
+							}
+						}
+					});
+				}
+				$(document).ready(function() {
+					var pageContext = {};
+					// dialog区域的标识
+					pageContext.dialogId = "selectParentRecordDialog${eventConfig.eventId}";
+					pageContext.dialogContainerId = "selectParentRecordDialogContainer${eventConfig.eventId}";
+					pageContext.formId = "submitForm${eventConfig.eventId}";
+					var propertyGridHeightStyle;
+					var panelWidth = $(window).width();
+					var panelHeight = $(window).height() - 35;
+					pageContext.dialogWidth = panelWidth - 10;
+					pageContext.dialogHeight = panelHeight - 10;
+					propertyGridHeightStyle = (panelHeight - 50) + "px";
+					// 初始化Form表单中的组件
+					eventConfig.initComponentInForm(pageContext);
+					// 初始化按钮信息
+					eventConfig.initButton(pageContext);
+					$("#submitForm${eventConfig.eventId}Table").css("height" , propertyGridHeightStyle);
+					$("#submitForm${eventConfig.eventId}").submit(function(e) {
+						$("#submitButton${eventConfig.eventId}").linkbutton("disable");
+						$.messager.progress({
+							title:'数据提交中',
+							msg:'数据提交中，请勿关闭窗口'
+						});
+						var config= {
+							type:"post",
+							dataType : 'text',
+							success: function(data, textStatus, jqXHR) {
+								data = $.parseJSON(data);
+								$.messager.progress("close");
+								$("#submitButton${eventConfig.eventId}").linkbutton("enable");
+								if(data.code == 200) {
+									pageCommonFn.alertResponseMessage(data);
+									setBasicHideVal();
+									// 如果是从列表里面来的，那么在成功以后需要更新一下列表
+									if(fromListId) {
+										parent.$("#" + fromListId).datagrid("reload");
+										// 关闭层
+										setTimeout("parent.layer.close(parent.layer.index)" , 300);
+									}
+								}else {
+									if(data.isContinue != undefined && data.isContinue)
+									{
+										$.messager.confirm({
+											width: 380,
+											height: 180,
+											title: '操作确认',
+											msg:  data.msg + '确定继续保存数据吗？',
+											fn:function(r){
+												if(r) {
+													$("#isContinueSumbit").val(true);
+													$("#submitButton${eventConfig.eventId}").linkbutton("disable");
+													$("#submitForm${eventConfig.eventId}").triggerHandler("submit");
+													setBasicHideVal();
+													$.messager.progress({
+														title:'数据提交中',
+														msg:'数据提交中，请勿关闭窗口'
+													});
+												}
+											}
+										});
+									}else if(data.isWarnContinue != undefined && data.isWarnContinue){
+										$.messager.confirm({
+											width: 380,
+											height: 180,
+											title: '操作确认',
+											msg:  data.msg + '确定继续保存数据吗？',
+											fn:function(r){
+												if(r) {
+													$("#isContinueSensitiveSumbit").val(true);
+													$("#submitButton${eventConfig.eventId}").linkbutton("disable");
+													$("#submitForm${eventConfig.eventId}").triggerHandler("submit");
+													setBasicHideVal();
+													$.messager.progress({
+														title:'数据提交中',
+														msg:'数据提交中，请勿关闭窗口'
+													});
+												}
+											}
+										});
+									}else {
+										$.messager.alert("错误",data.msg,'error');
+									}
+								}
+							},
+							error:function (XMLHttpRequest, textStatus, e) {
+								$.messager.progress("close");
+								$("#submitButton${eventConfig.eventId}").linkbutton("enable");
+								$.messager.alert('错误','与服务器交互失败','error');
+							}
+						};
+						$(this).ajaxSubmit(config);
+						return false;
+					});
+					 layui.use(['layer']);
+				});
+			})();
+		</script>
+		<div id="selectParentRecordDialogContainer${eventConfig.eventId}">
+			<div id="selectParentRecordDialog${eventConfig.eventId}"></div>
+		</div>
+		<form id="submitForm${eventConfig.eventId}" method="post" enctype="multipart/form-data" action="dataManagement.editTableData.save.do">
+			<div id="submitForm${eventConfig.eventId}Table">
+			<input type="hidden" name="event_id" id="event_id" value='${eventConfig.eventId}' />
+			<input type="hidden" name="id" id="id" value='${eventConfig.id}' />
+			<input type="hidden" name="isContinueSumbit" id="isContinueSumbit"/>
+			<input type="hidden" name="isContinueSensitiveSumbit" id="isContinueSensitiveSumbit"/>
+			<div class="layui-fluid">
+    			<div class="layui-row">
+    				<div class="layui-col-md12">
+    		<%
+				JSONObject eventConfig = (JSONObject)request.getAttribute("eventConfig");
+				JSONArray componentConfigArr = eventConfig.getJSONArray("componentConfig");
+				JSONObject oneAddFormGroup = null;
+				JSONArray itemArr = null;
+				JSONObject itemJson = null;
+				for(int i = 0 ; i < componentConfigArr.size();i++) {
+					oneAddFormGroup = componentConfigArr.getJSONObject(i);
+					itemArr = oneAddFormGroup.getJSONArray("itemArr");
+					String styleGroup="";
+					if(1==itemArr.size()){
+						String hidden=itemArr.getJSONObject(0).getString("hidden");
+						if("true".equals(hidden)){
+							styleGroup="style='display: none' ";
+						}
+					}
+			%>
+			<!-- 卡片开始 -->
+			<div class="layui-card" <%=styleGroup%>>
+				<div class="layui-card-header"><%=oneAddFormGroup.getString("groupName")%></div>
+				<div class="layui-card-body">
+					<div class="layui-row layui-col-space20 layui-form-item">
+						<%
+						for(int j=0 ; j < itemArr.size() ; j++) {
+							itemJson = itemArr.getJSONObject(j);
+							String hidden=itemJson.getString("hidden");
+							String style="";
+							if("true".equals(hidden)){
+								style="style='display: none' ";
+							}
+						%>
+							<!-- 完整的部分开始 -->
+							<div class="layui-col-lg6" <%=style%> >
+								<label class="layui-form-label">
+									<%
+										if(!StringUtils.isEmpty(itemJson.getString("tip"))){
+									%>
+									<a href="javascript:void(0);" title="<%=itemJson.getString("tip")%>" class="easyui-tooltip" style="color: #666">
+
+										<%	}  %>
+
+										<%=itemJson.getString("labelName")%>：</a>
+								</label>
+								<div class="layui-input-block">
+									<input style="width:100%;" id="<%=itemJson.getString("id")%>" name="<%=itemJson.getString("id")%>" />
+								</div>
+							</div>
+							<!-- 完整的部分结束 -->
+						<%}%>
+					</div>
+				</div>
+			</div>
+			<!-- 卡片结束 -->
+			<%
+				}
+			%>
+					</div>
+    			</div>
+   			</div>
+			</div>
+		</form>
+		<!--按钮组-->
+		<div id="accordionToolArea" class="formbtn-group">
+			<span><a id="cancelButton${eventConfig.eventId}" href="#1" class="fb-linkbutton">关闭</a></span>
+			<a id="submitButton${eventConfig.eventId}" href="#1" class="fb-linkbutton btn-save">保存</a>
+		</div>
+		<!--按钮组-->
+		<!--按钮组-->
+		<script>
+			$(".toggle-alink").bind("click" , function() {
+				$(this).toggleClass('active');
+				$(this).parent().find('.dowebok').toggleClass('curr');
+			});
+		</script>
+	</body>
+</html>
