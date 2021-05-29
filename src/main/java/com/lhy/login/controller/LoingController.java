@@ -30,8 +30,6 @@ public class LoingController {
     @Resource
     private DcUsersService usersService;
 
-//    @Autowired
-//    ServletContext servletContext;
 
     @Autowired
     private DcUsersService service;
@@ -39,6 +37,16 @@ public class LoingController {
     @RequestMapping({"/","/login"})
     public String login() {
         return "login";
+    }
+
+    @RequestMapping("index")
+    public String index() {
+        return "index";
+    }
+
+    @RequestMapping("/welcome")
+    public String welcome() {
+        return "welcome";
     }
 
     /**
