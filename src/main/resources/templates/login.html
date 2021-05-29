@@ -40,24 +40,40 @@
     <script src="/lib/layui/layui.js" charset="utf-8"></script>
     <script>
         $(document).ready(function() {
-            var companyData = [{id:'1',text:'硕媒科技有限公司'},{id:'2',text:'老元建筑公司'}];
+            $.ajax({
+                url:"/dcRoles/get_roles",
+                type:"get",
+                datatype:"json",
+                success:function (json) {
+                       if (json.code==20){
+                           $("#roleId").combobox({
+                               valueField : 'id',
+                               textField : 'name',
+                               data: json.data,
+                               required : true,
+                               editable : true
+                           });
+                       }
+                }
+            });
+            // var companyData = [{id:'1',text:'硕媒科技有限公司'},{id:'2',text:'老元建筑公司'}];
             // 选择公司的下拉框初始化
-            $("#companyId").combobox({
-                data: companyData ,
-                valueField : 'id',
-                textField : 'text',
-                required : true,
-                editable : true
-            });
-            var roleData = [{id:'1',text:'管理员'},{id:'2',text:'普通员工'}];
+            // $("#companyId").combobox({
+            //     data: companyData ,
+            //     valueField : 'id',
+            //     textField : 'text',
+            //     required : true,
+            //     editable : true
+            // });
+            // var roleData = [{id:'1',text:'管理员'},{id:'2',text:'普通员工'}];
             // 选择角色的下拉框初始化
-            $("#roleId").combobox({
-                valueField : 'id',
-                textField : 'text',
-                data: roleData,
-                required : true,
-                editable : true
-            });
+            // $("#roleId").combobox({
+            //     valueField : 'id',
+            //     textField : 'text',
+            //     data: roleData,
+            //     required : true,
+            //     editable : true
+            // });
             $("#logonBtn").bind("click",function() {
                 var userAccount = $("#userAccount").textbox("getValue");
                 var password = $("#password").textbox("getValue");

@@ -13,6 +13,8 @@ public class DcRoles implements Serializable {
     private static final long serialVersionUID = -37341768404676116L;
     
     private Integer id;
+
+    private  String name;
     
     private Integer state;
     
@@ -25,12 +27,21 @@ public class DcRoles implements Serializable {
     private Integer parentId;
 
 
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getState() {

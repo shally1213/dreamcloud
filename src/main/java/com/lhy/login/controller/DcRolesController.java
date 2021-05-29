@@ -2,9 +2,11 @@ package com.lhy.login.controller;
 
 import com.lhy.login.entity.DcRoles;
 import com.lhy.login.service.DcRolesService;
+import com.lhy.vo.JsonResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * (DcRoles)表控制层
@@ -31,5 +33,13 @@ public class DcRolesController {
     public DcRoles selectOne(Integer id) {
         return this.dcRolesService.findById(id);
     }
+
+
+    @GetMapping("get_roles")
+    public JsonResult<List<DcRoles>> getRoles(DcRoles roles){
+        List<DcRoles> dcRoles = dcRolesService.queryAll(roles);
+        return new JsonResult<>(dcRoles);
+    }
+
 
 }

@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2021/5/22 21:11
  */
 @Controller
-public class LoingController {
+public class LoingController extends BaseController  {
 
     /**
      * 服务对象

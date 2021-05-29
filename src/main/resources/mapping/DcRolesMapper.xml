@@ -4,6 +4,7 @@
 
     <resultMap type="com.lhy.login.entity.DcRoles" id="DcRolesMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="state" column="state" jdbcType="INTEGER"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="withdrawTime" column="withdraw_time" jdbcType="TIMESTAMP"/>
@@ -14,7 +15,7 @@
     <!--查询单个-->
     <select id="findById" resultMap="DcRolesMap">
         select
-          id, state, create_time, withdraw_time, del_state, parent_id
+          id, name, state, create_time, withdraw_time, del_state, parent_id
         from dreamcloud.dc_roles
         where id = #{id}
     </select>
@@ -22,7 +23,7 @@
     <!--查询指定行数据-->
     <select id="findAllLimit" resultMap="DcRolesMap">
         select
-          id, state, create_time, withdraw_time, del_state, parent_id
+          id, name, state, create_time, withdraw_time, del_state, parent_id
         from dreamcloud.dc_roles
         limit #{offset}, #{limit}
     </select>
@@ -30,11 +31,14 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="DcRolesMap">
         select
-          id, state, create_time, withdraw_time, del_state, parent_id
+          id, name
         from dreamcloud.dc_roles
         <where>
             <if test="id != null">
                 and id = #{id}
+            </if>
+            <if test="name != null">
+                and name = #{name}
             </if>
             <if test="state != null">
                 and state = #{state}
@@ -56,14 +60,17 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into dreamcloud.dc_roles(state, create_time, withdraw_time, del_state, parent_id)
-        values (#{state}, #{createTime}, #{withdrawTime}, #{delState}, #{parentId})
+        insert into dreamcloud.dc_roles(name, state, create_time, withdraw_time, del_state, parent_id)
+        values (#{name}, #{state}, #{createTime}, #{withdrawTime}, #{delState}, #{parentId})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update dreamcloud.dc_roles
         <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
             <if test="state != null">
                 state = #{state},
             </if>
