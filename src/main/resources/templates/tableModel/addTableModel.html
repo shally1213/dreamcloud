@@ -1,0 +1,88 @@
+<!DOCTYPE html >
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>后台管理</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<!--  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        -->
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="stylesheet" href="/css/font.css">
+		<link rel="stylesheet" href="/css/login.css">
+		<link rel="stylesheet" href="/css/xadmin.css">
+		<link rel="stylesheet" type="text/css" href="/css/easyui.css" >
+		<!--//新增自定义样式与脚本--->
+		<script type="text/javascript" src="/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="/js/locale/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript" src="/js/jquery.form.js"></script>
+		<script src="/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/jquery.datagrid.js?"></script>
+	</head>
+	<body>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#mySubmitForm").submit(function(e) {
+				var config= {
+					type:"post",
+					dataType : 'text',
+					success: function(data, textStatus, jqXHR) {
+						$.messager.progress("close");
+						$("#submitButton").linkbutton("enable");
+						pageCommonFn.alertRespJsonMsg($.parseJSON(data));
+						var onSaveSuccessFunc = $("#dialogArea").dialog("options").onSaveSuccess;
+						// 如果有保存成功后的进一步的函数处理，则进行函数的调用
+						if(onSaveSuccessFunc) {
+							onSaveSuccessFunc.call();
+						}
+						$("#dialogArea").dialog("close");
+					},
+					error:function (XMLHttpRequest, textStatus, e) {
+						$.messager.progress("close");
+						$("#submitButton").linkbutton("enable");
+						$.messager.alert('错误','与服务器交互失败','error');
+					}
+				};
+				$(this).ajaxSubmit(config);
+				return false;
+			});
+			$("#submitButton").bind("click",function() {
+				if($("#mySubmitForm").form('validate')) {
+					$("#submitButton").linkbutton("disable");
+					$("#mySubmitForm").triggerHandler("submit");
+					$.messager.progress({
+						title:'数据提交中',
+						msg:'数据提交中，请勿关闭窗口'
+					});
+				} else {
+					$.messager.alert('错误','验证未通过，可将鼠标移到红色区域查看提示','error');
+				}
+			});
+		});
+	</script>
+	<div id="accordionToolArea" style="float:right;">
+		<a id="submitButton" href="javascript:void(0);" style="margin:5px;" class="easyui-linkbutton" iconCls="icon-save">保存</a>
+	</div>
+	<form id="mySubmitForm" method="post" enctype="multipart/form-data" action="metaManagement.addApplicationModule.do">
+		<table border="1" cellspacing="0px" style="border-collapse:collapse;width:100%;">
+			<tr>
+				<td width="15%" align="right">父模块：</td>
+				<td width="85%" align="left" colspan="3">
+					<input id="parentModule" name="parentModule" value="${parentId}" class="easyui-combotree" data-options="url:'applicationManagement.loadApplicationModule.do',editable:true" style="width:90%"/>
+				</td>
+			</tr>
+			<tr>
+				<td width="15%" align="right">模块名称：</td>
+				<td width="35%" align="left">
+					<input id="moduleName" name="moduleName" class="easyui-textbox" data-options="required:true" style="width:90%"/>
+				</td>
+				<td width="15%" align="right">模块顺序:</td>
+				<td width="35%" align="left">
+					<input id="moduleIndex" name="moduleIndex" class="easyui-numberbox" data-options="precision:0,required:true" style="width:90%"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	</body>
+</html>

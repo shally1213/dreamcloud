@@ -64,7 +64,6 @@
                                     <th>用户账号</th>
                                     <th>用户地址</th>
                                     <th>用户邮箱</th>
-                                    <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -76,7 +75,6 @@
                                     <td th:text="${u.uaccount}"></td>
                                     <td th:text="${u.uaddress}"></td>
                                     <td th:text="${u.uemail}"></td>
-                                    <td> <a class="layui-btn" th:href="@{/udel(id=${u.uid})}">删除</a> </nbsp> <a class="layui-btn" th:href="@{uget/}+${u.uid}" th:text="修改"></a></td>
                                 </tr>
                                 </tbody>
                             </table>

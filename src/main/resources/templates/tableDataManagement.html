@@ -1,0 +1,220 @@
+<!DOCTYPE html >
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>后台管理</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<!--  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        -->
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="stylesheet" href="/css/font.css">
+		<link rel="stylesheet" href="/css/login.css">
+		<link rel="stylesheet" href="/css/xadmin.css">
+		<link rel="stylesheet" type="text/css" href="/css/easyui.css" >
+		<!--//新增自定义样式与脚本--->
+		<script type="text/javascript" src="/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="/js/locale/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript" src="/js/jquery.form.js"></script>
+		<script src="/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/jquery.datagrid.js?"></script>
+
+	</head>
+	<body>
+	<script type="text/javascript">
+			(function() {
+				// 页面配置的数据
+				var pageConfig = ${pageConfig};
+				// 获取查询条件的数据信息
+				pageConfig.getQueryCondDatas = function() {
+					var condComponentArr = pageConfig.queryConditionConfig;
+					var param = {};
+					var componentConfigArr;
+					var componentConfigItem;
+					for(var i = 0 ; i < condComponentArr.length ; i++) {
+						componentConfigArr = condComponentArr[i].componentConfigArr;
+						for(var j = 0 ; j < componentConfigArr.length ; j++) {
+							componentConfigItem = componentConfigArr[j];
+							param[componentConfigItem.id] = pageCommonFn.getFieldValue(componentConfigItem.id,componentConfigItem.componentType).trim();
+						}
+					}
+					var queryConditionData =  {};
+					// 页面的ID
+					queryConditionData.page_id = pageConfig.pageId;
+					// 查询条件
+					queryConditionData.queryCond = JSON.stringify(param);
+					// 如果有额外的附件条件，就添加进去
+					$.extend(queryConditionData , pageConfig.additionalConditionLimit);
+					return queryConditionData;
+				};
+				// 初始化查询条件区域
+				pageConfig.initQueryCondArea = function() {
+					var queryConditionConfig = pageConfig.queryConditionConfig;
+					var queryConditionConfigItem;
+					var componentConfigItem;
+					for(var i = 0 ; i < queryConditionConfig.length ; i++) {
+						queryConditionConfigItem = queryConditionConfig[i].componentConfigArr;
+						for(var j = 0 ; j < queryConditionConfigItem.length ; j++) {
+							componentConfigItem = queryConditionConfigItem[j];
+							$("#"+componentConfigItem.id)[componentConfigItem.componentType](componentConfigItem);
+						}
+					}
+					// 对于查询条件区域设置回车事件
+					$("#queryConditionArea_" + pageConfig.pageId).bind("keydown",function(event) {
+						if(event.keyCode == 13) {
+							$("#searchButton_" + pageConfig.pageId).trigger("click");
+						}
+					});
+					// 绑定查询事件
+					$("#searchButton_" + pageConfig.pageId).linkbutton({
+						iconCls : "icon-search",
+						onClick : function() {
+							// 如果当前有选中，则取消
+							$("#query_area_" + pageConfig.pageId).datagrid("unselectAll");
+							var queryParams = pageConfig.getQueryCondDatas();
+							$("#query_area_" + pageConfig.pageId).datagrid("load" , queryParams);
+						}
+					});
+				};
+				// 初始化查询条件区域
+				pageConfig.initDatagridArea = function() {
+					var queryParams = pageConfig.getQueryCondDatas();
+					var datagridHeight = ($(document).height());
+					var datagridConfig = {
+						idField : 'id',
+						url : "dataManagement.loadTableData.do",
+						toolbar: '#toolbar_' + pageConfig.pageId,
+						height : datagridHeight,
+						queryParams : queryParams,
+						fitColumns:false,
+						selectOnCheck:true,
+						checkOnSelect:true,
+						nowrap : false,
+						striped : true,
+						remoteSort : false,
+						rownumbers : true,
+						loadMsg : '数据加载中。。。',
+						onDblClickRow : function(index , row) {
+							var eventConfig = pageConfig.eventConfig.dblClickTriggerEvent;
+							// 如果没有配置双击事件，则直接返回
+							if(!eventConfig) {
+								return true;
+							}
+							var manualTriggerEvent = new TableDataManagementEvent[eventConfig.eventType](eventConfig,pageConfig);
+				    		manualTriggerEvent.fire(row.id);
+						},
+						onBeforeLoad : function(param) {
+							$("#query_area_" + pageConfig.pageId).datagrid('unselectAll');
+						},
+						pageList : [20 , 50 , 100 , 200]
+					};
+					$.extend(datagridConfig , pageConfig.datagridConfig);
+					$("#query_area_" + pageConfig.pageId).datagrid(datagridConfig);
+				};
+				// 按钮触发事件的初始化
+				pageConfig.initButtonTriggerEvent = function() {
+					var buttonTriggerEvents = pageConfig.eventConfig.buttonTriggerEvents;
+					var buttonTriggerEventHtml = '';
+					for(var i = 0  ; i < buttonTriggerEvents.length ; i++) {
+						buttonTriggerEventHtml += '<a class="buttonTriggerEvent" id="event_' + pageConfig.pageId + '_' + buttonTriggerEvents[i].eventId + '" href="#">';
+						buttonTriggerEventHtml += buttonTriggerEvents[i].buttonName;
+						buttonTriggerEventHtml += '</a>';
+					}
+					$("#buttonTriggerEventArea_" + pageConfig.pageId).append(buttonTriggerEventHtml);
+					for(var i = 0  ; i < buttonTriggerEvents.length ; i++) {
+						var eventItem = buttonTriggerEvents[i];
+						(function(eventItem) {
+							$("#event_" + pageConfig.pageId + '_' + eventItem.eventId).linkbutton({
+								iconCls : "icon-edit",
+								plain : false,
+								onClick : function() {
+									var manualTriggerEvent = new TableDataManagementEvent[eventItem.eventType](eventItem,pageConfig);
+						    		manualTriggerEvent.fire();
+								}
+							});
+						})(eventItem);
+					}
+				};
+				$(document).ready(function() {
+					var dialogWidth = Math.floor($(document).width()/1.02);
+					var dialogHeight = Math.floor($(document).height()/1.02);
+					var pageContext = {};
+					pageContext.pageId = pageConfig.pageId;
+					pageContext.dialogWidth = dialogWidth;
+					pageContext.dialogHeight = dialogHeight;
+					pageContext.queryAreaId = "query_area_" + pageConfig.pageId;
+					pageContext.dialogAreaId = "dialogArea_${page.id}";
+					pageContext.dialogContainerId = "dialogContainer_${page.id}";
+					pageConfig.pageContext = pageContext;
+					// 初始化事件区域
+					pageConfig.initButtonTriggerEvent();
+					// 初始化查询条件区域
+					pageConfig.initQueryCondArea();
+					// 初始化数据表格区域
+					pageConfig.initDatagridArea();
+					// 初始化layui的信息
+					layui.use(['layer']);
+				});
+			})();
+		</script>
+		<script>
+			//折叠搜索区域
+			$(function(){
+				$('.toggleFilter').click(function(){
+					var domH = $(this).parent().innerHeight() + 1;
+					$(this).toggleClass("toggleFilter-current");
+					$(this).parent().parent().find('.filterArea').css({"top":domH})
+					$(this).parent().parent().find('.filterArea').slideToggle();
+					return false;
+				});
+
+				$('.searchBtn').click(function(){
+					$(this).parent().slideToggle();
+					$(this).parent().parent().find('.toggleFilter').toggleClass("toggleFilter-current");
+					return false;
+				});
+
+
+
+			});
+	</script>
+	<div id="toolbar_${pageConfig.pageId}" class="table-bars">
+		<input id="hideVal" hidden="hidden"  type="text" value="">
+		<div id="buttonTriggerEventArea_${pageConfig.pageId}" class="buttonTriggerEventArea">
+			<th:if test="${not empty pageConfig.queryConditionConfig}">
+			<div class="toggleFilter"><span>条件筛选</span></div>
+			</th:if>
+		</div>
+		<th:if test="${not empty pageConfig.queryConditionConfig}">
+		<div class="filterArea clearfix" id="queryConditionArea_${pageConfig.pageId}">
+				<%
+					JSONObject pageConfig = (JSONObject) request.getAttribute("pageConfig");
+					JSONArray condComponentArr = (JSONArray) pageConfig.getJSONArray("queryConditionConfig");
+					JSONObject condComponentItem = null;
+					JSONArray oneItemComponentConfigArr = null;
+					for(int i = 0 ; i < condComponentArr.size() ; i++) {
+						condComponentItem = condComponentArr.getJSONObject(i);
+						oneItemComponentConfigArr = condComponentItem.getJSONArray("componentConfigArr");
+				%>
+					<div class="filter-box">
+						<%for(int j =0;j<oneItemComponentConfigArr.size();j++ ) { %>
+							<% if (j > 0) {%>
+								~
+							<%} %>
+							<input id="<%=oneItemComponentConfigArr.getJSONObject(j).getString("id") %>" />
+						<%} %>
+					</div>
+				<%
+					}
+				%>
+			<a id="searchButton_${pageConfig.pageId}" href="#" class="searchBtn">查询</a>
+			</div>
+		</th:if>
+	</div>
+		<table id="query_area_${pageConfig.pageId}" style="width:100%;" ></table>
+		<div id="dialogContainer_${pageConfig.pageId}">
+			<div id="dialogArea_${pageConfig.pageId}"></div>
+		</div>
+	</body>
+</html>
